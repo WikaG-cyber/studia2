@@ -21,8 +21,12 @@ category_filter = st.sidebar.multiselect("Kategorie produktów", data["Category"
 filtered_data = data[(data["Age"] >= age_filter[0]) & 
                      (data["Age"] <= age_filter[1]) & 
                      (data["Category"].isin(category_filter))]
-# Wstawione na nowo: filtr po sezonie
+# Filtrowanie danych po sezonie
 season_filter = st.sidebar.multiselect("Sezon", data["Season"].unique(), data["Season"].unique())
+
+# Filtr po przedziale kwoty zakupów
+purchase_filter = st.sidebar.slider("Kwota zakupów (USD)", int(data["Purchase Amount (USD)"].min()), int(data["Purchase Amount (USD)"].max()), (0, 500))
+
 
 # Wyświetlanie danych
 st.write("### Filtrowane dane", filtered_data)
@@ -56,3 +60,27 @@ ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
 st.pyplot(fig)
 
+# Wykres 4 - Wykres rozrzutu
+st.write("### Wykres rozrzutu: Wiek vs Kwota zakupów")
+fig, ax = plt.subplots()
+ax.scatter(filtered_data["Age"], filtered_data["Purchase Amount (USD)"], alpha=0.7)
+ax.set_xlabel("Wiek")
+ax.set_ylabel("Kwota zakupów (USD)")
+st.pyplot(fig)
+
+# Wstawione na nowo: Wykres 5 - Wykres kołowy
+st.write("### Udział kategorii produktów w zakupach")
+fig, ax = plt.subplots()
+category_counts.plot(kind="pie", autopct='%1.1f%%', ax=ax)
+ax.set_ylabel("")  # Usunięcie etykiety dla lepszego wyglądu
+st.pyplot(fig)
+
+# Wstawione na nowo: Wykres 6 - Heatmapa korelacji
+st.write("### Heatmapa korelacji danych")
+# Wybieramy kolumny numeryczne dla korelacji
+numerical_cols = filtered_data.select_dtypes(include=['float64', 'int64'])
+correlation_matrix = numerical_cols.corr()
+fig, ax = plt.subplots(figsize=(8, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax)
+ax.set_title("Macierz korelacji")
+st.pyplot(fig)
