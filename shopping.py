@@ -77,10 +77,22 @@ st.pyplot(fig)
 
 # Wstawione na nowo: Wykres 6 - Heatmapa korelacji
 st.write("### Heatmapa korelacji danych")
+
 # Wybieramy kolumny numeryczne dla korelacji
 numerical_cols = filtered_data.select_dtypes(include=['float64', 'int64'])
-correlation_matrix = numerical_cols.corr()
-fig, ax = plt.subplots(figsize=(8, 6))
-sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax)
-ax.set_title("Macierz korelacji")
-st.pyplot(fig)
+
+# Sprawdzenie, czy mamy kolumny liczbowe
+if not numerical_cols.empty:
+    correlation_matrix = numerical_cols.corr()
+
+    # Sprawdzenie, czy macierz korelacji nie jest pusta
+    if not correlation_matrix.empty:
+        fig, ax = plt.subplots(figsize=(8, 6))
+        sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax)
+        ax.set_title("Macierz korelacji")
+        st.pyplot(fig)
+    else:
+        st.warning("Brak wystarczających danych do obliczenia korelacji.")
+else:
+    st.warning("Brak kolumn liczbowych w wybranych danych do utworzenia macierzy korelacji.")
+
