@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Wczytaj dane
 @st.cache
@@ -18,19 +17,10 @@ st.sidebar.title("Opcje analizy")
 age_filter = st.sidebar.slider("Wiek klienta", int(data["Age"].min()), int(data["Age"].max()), (18, 60))
 category_filter = st.sidebar.multiselect("Kategorie produktów", data["Category"].unique(), data["Category"].unique())
 
-# Wstawione na nowo: filtr po sezonie
-season_filter = st.sidebar.multiselect("Sezon", data["Season"].unique(), data["Season"].unique())
-
-# Wstawione na nowo: filtr po przedziale kwoty zakupów
-purchase_filter = st.sidebar.slider("Kwota zakupów (USD)", int(data["Purchase Amount (USD)"].min()), int(data["Purchase Amount (USD)"].max()), (0, 500))
-
 # Filtruj dane
 filtered_data = data[(data["Age"] >= age_filter[0]) & 
                      (data["Age"] <= age_filter[1]) & 
-                     (data["Category"].isin(category_filter)) & 
-                     (data["Season"].isin(season_filter)) & 
-                     (data["Purchase Amount (USD)"] >= purchase_filter[0]) & 
-                     (data["Purchase Amount (USD)"] <= purchase_filter[1])]
+                     (data["Category"].isin(category_filter))]
 
 # Wyświetlanie danych
 st.write("### Filtrowane dane", filtered_data)
@@ -53,7 +43,7 @@ season_mean = filtered_data.groupby("Season")["Purchase Amount (USD)"].mean()
 fig, ax = plt.subplots()
 season_mean.plot(kind="bar", ax=ax)
 ax.set_xlabel("Sezon")
-ax.set_ylabel("\u015arednia kwota zakupów (USD)")
+ax.set_ylabel("Średnia kwota zakupów (USD)")
 st.pyplot(fig)
 
 # Wykres 3: Liczba klientów wg wieku
@@ -62,30 +52,5 @@ fig, ax = plt.subplots()
 filtered_data["Age"].hist(bins=20, ax=ax)
 ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
-st.pyplot(fig)
-
-# Wstawione na nowo: Wykres 4 - Wykres rozrzutu
-st.write("### Wykres rozrzutu: Wiek vs Kwota zakupów")
-fig, ax = plt.subplots()
-ax.scatter(filtered_data["Age"], filtered_data["Purchase Amount (USD)"], alpha=0.7)
-ax.set_xlabel("Wiek")
-ax.set_ylabel("Kwota zakupów (USD)")
-st.pyplot(fig)
-
-# Wstawione na nowo: Wykres 5 - Wykres kołowy
-st.write("### Udział kategorii produktów w zakupach")
-fig, ax = plt.subplots()
-category_counts.plot(kind="pie", autopct='%1.1f%%', ax=ax)
-ax.set_ylabel("")  # Usunięcie etykiety dla lepszego wyglądu
-st.pyplot(fig)
-
-# Wstawione na nowo: Wykres 6 - Heatmapa korelacji
-st.write("### Heatmapa korelacji danych")
-# Wybieramy kolumny numeryczne dla korelacji
-numerical_cols = filtered_data.select_dtypes(include=['float64', 'int64'])
-correlation_matrix = numerical_cols.corr()
-fig, ax = plt.subplots(figsize=(8, 6))
-sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", ax=ax)
-ax.set_title("Macierz korelacji")
 st.pyplot(fig)
 
