@@ -100,7 +100,7 @@ if not data.empty:
         ax.set_ylabel("")  # usunięcie etykiety dla lepszego wyglądu
         st.pyplot(fig)
 
-# Wykres 6: Najpopularniejszy dzień tygodnia
+        # Wykres 6: Najpopularniejszy dzień tygodnia
 st.write("### Najpopularniejszy dzień tygodnia")
 if "Day of Week" in data.columns:
     # Jeśli kolumna "Day of Week" istnieje, używamy jej
@@ -129,6 +129,8 @@ if day_counts is not None:
     st.pyplot(fig)
 else:
     st.write("Brak danych do analizy najpopularniejszych dni tygodnia.")
+
+
 
 
         # Wykres 7: Średnia kwota zakupów w przedziałach wiekowych
