@@ -99,5 +99,30 @@ if not data.empty:
         category_counts.plot(kind="pie", autopct='%1.1f%%', ax=ax)
         ax.set_ylabel("")  # usunięcie etykiety dla lepszego wyglądu
         st.pyplot(fig)
+
+        # Wykres 6: Najpopularniejszy dzień tygodnia
+        st.write("### Najpopularniejszy dzień tygodnia")
+        if "Day of Week" in data.columns:
+            day_counts = filtered_data["Day of Week"].value_counts()
+            st.write("Najczęstszy dzień zakupów:", day_counts.idxmax())
+            fig, ax = plt.subplots()
+            day_counts.plot(kind="bar", ax=ax)
+            ax.set_xlabel("Dzień tygodnia")
+            ax.set_ylabel("Liczba zakupów")
+            st.pyplot(fig)
+        else:
+            st.write("Brak danych o dniach tygodnia.")
+
+        # Wykres 7: Średnia kwota zakupów w przedziałach wiekowych
+        st.write("### Średnia kwota zakupów w przedziałach wiekowych")
+        bins = range(int(data["Age"].min()), int(data["Age"].max()) + 10, 10)
+        filtered_data["Age Group"] = pd.cut(filtered_data["Age"], bins=bins)
+        age_group_means = filtered_data.groupby("Age Group")["Purchase Amount (USD)"].mean()
+        fig, ax = plt.subplots()
+        age_group_means.plot(kind="bar", ax=ax)
+        ax.set_xlabel("Grupa wiekowa")
+        ax.set_ylabel("Średnia kwota zakupów (USD)")
+        st.pyplot(fig)
     else:
         st.write("Brak danych spełniających podane kryteria filtrowania.")
+
