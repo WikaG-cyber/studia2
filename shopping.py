@@ -21,7 +21,7 @@ category_filter = st.sidebar.multiselect("Kategorie produktów", data["Category"
 filtered_data = data[(data["Age"] >= age_filter[0]) & 
                      (data["Age"] <= age_filter[1]) & 
                      (data["Category"].isin(category_filter))]
-filtered_data2 = data[data["Season"].isin(category_filter)]
+filtered_data_2 = data[data["Season"].isin(category_filter)]
 # Filtrowanie danych po sezonie
 season_filter = st.sidebar.multiselect("Sezon", data["Season"].unique(), data["Season"].unique())
 
@@ -46,7 +46,7 @@ st.pyplot(fig)
 
 # Wykres 2: Średnia kwota zakupów wg sezonu
 st.write("### Średnia kwota zakupów wg sezonu")
-season_mean = filtered_data2.groupby("Season")["Purchase Amount (USD)"].mean()
+season_mean = filtered_data_2.groupby("Season")["Purchase Amount (USD)"].mean()
 fig, ax = plt.subplots()
 season_mean.plot(kind="bar", ax=ax)
 ax.set_xlabel("Sezon")
