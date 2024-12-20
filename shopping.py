@@ -21,6 +21,7 @@ category_filter = st.sidebar.multiselect("Kategorie produktów", data["Category"
 filtered_data = data[(data["Age"] >= age_filter[0]) & 
                      (data["Age"] <= age_filter[1]) & 
                      (data["Category"].isin(category_filter))]
+
 filtered_data_2 = data[data["Season"].isin(category_filter)]
 # Filtrowanie danych po sezonie
 season_filter = st.sidebar.multiselect("Sezon", data["Season"].unique(), data["Season"].unique())
