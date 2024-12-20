@@ -19,7 +19,7 @@ data = load_data()
 # Sprawdź, czy dane zostały poprawnie załadowane (nie są puste)
 if not data.empty:
     # Ustawienia strony głównej
-    st.title("Shopping Trends Dashboard")  # Tytuł głównego dashboardu
+    st.title("Shopping Trends Dashboard by Wiktoria Głos & Hanna Trojanowska")  # Tytuł głównego dashboardu
     st.sidebar.title("Opcje analizy")  # Tytuł paska bocznego z opcjami
 
     # --- Definicja filtrów ---
