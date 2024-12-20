@@ -101,36 +101,17 @@ if not data.empty:
         st.pyplot(fig)
 
         # Wykres 6: Najpopularniejszy dzień tygodnia
-st.write("### Najpopularniejszy dzień tygodnia")
-if "Day of Week" in data.columns:
-    # Jeśli kolumna "Day of Week" istnieje, używamy jej
-    day_counts = filtered_data["Day of Week"].value_counts()
-else:
-    # Jeśli brak kolumny "Day of Week", spróbujemy ją utworzyć na podstawie kolumny "Date"
-    if "Date" in data.columns:
-        try:
-            data["Date"] = pd.to_datetime(data["Date"])
-            data["Day of Week"] = data["Date"].dt.day_name()  # Utwórz kolumnę z dniami tygodnia
-            filtered_data["Day of Week"] = data["Day of Week"]
+        st.write("### Najpopularniejszy dzień tygodnia")
+        if "Day of Week" in data.columns:
             day_counts = filtered_data["Day of Week"].value_counts()
-        except Exception as e:
-            st.error(f"Nie udało się utworzyć kolumny 'Day of Week': {e}")
-            day_counts = None
-    else:
-        st.warning("Brak danych o dniach tygodnia lub daty zakupów.")
-        day_counts = None
-
-if day_counts is not None:
-    st.write("Najczęstszy dzień zakupów:", day_counts.idxmax())
-    fig, ax = plt.subplots()
-    day_counts.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Dzień tygodnia")
-    ax.set_ylabel("Liczba zakupów")
-    st.pyplot(fig)
-else:
-    st.write("Brak danych do analizy najpopularniejszych dni tygodnia.")
-
-
+            st.write("Najczęstszy dzień zakupów:", day_counts.idxmax())
+            fig, ax = plt.subplots()
+            day_counts.plot(kind="bar", ax=ax)
+            ax.set_xlabel("Dzień tygodnia")
+            ax.set_ylabel("Liczba zakupów")
+            st.pyplot(fig)
+        else:
+            st.write("Brak danych o dniach tygodnia.")
 
 
         # Wykres 7: Średnia kwota zakupów w przedziałach wiekowych
